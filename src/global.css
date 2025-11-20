@@ -1,0 +1,6 @@
+@import url('./colors.css');
+
+html {
+  font-family: sans-serif;
+  background-color: var(--primary);
+}
