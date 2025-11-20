@@ -1,3 +1,5 @@
+<img width="1193" height="667" alt="Captura de tela de 2025-11-19 23-16-12" src="https://github.com/user-attachments/assets/8f4a9e60-299c-4a3c-8d64-a93b1b007ee4" />
+
 ## sobre o projeto
 
 como atleta, sempre curti jogar futebol durante a semana. se pudesse, jogaria todos os dias. muitos amigos meus pensam da mesma forma, e uma situação muito comum é a falta de goleiro. isso acontece direto.
