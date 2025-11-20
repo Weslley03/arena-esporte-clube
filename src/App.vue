@@ -13,16 +13,19 @@
     </div>
 
     <div class="content">
-      <template v-for="(cards, dayName) in groupsByDay" :key="dayName">
-        <index-colum :label="dayName" />
-        <offer-card
-          v-for="card in cards"
-          :key="card.id"
-          :game-date="card.gameDate"
-          :owner="card.ownerName"
-          :looking-for="card.lookingFor"
-        />
+      <template v-if="Object.keys(groupsByDay).length">
+        <template v-for="(cards, dayName) in groupsByDay" :key="dayName">
+          <index-colum :label="dayName" />
+          <offer-card
+            v-for="card in cards"
+            :key="card.id"
+            :game-date="card.gameDate"
+            :owner="card.user.name"
+            :looking-for="card.lookingFor"
+          />
+        </template>
       </template>
+      <span v-else> nenhuma vaga disponível esta semana. </span>
     </div>
   </section>
 </template>
@@ -36,6 +39,7 @@ import OfferCard from './components/OfferCard.vue';
 import type { PlayerVacancyDTO } from './dtos/PlayerVacancyDTO';
 import { mockPlayerVacancies } from './utils/mocks';
 import { dayMap } from './utils/dayMap';
+import { firebase, playerVacancyDAO } from './services/api.service';
 
 export default defineComponent({
   name: 'App',
@@ -113,9 +117,11 @@ export default defineComponent({
       }
     }
 
-    const initComponent = () => {
+    const initComponent = async () => {
       weekText.value = weekInterval()
-      filterVacanciesThisWeek(mockPlayerVacancies)
+      await firebase.login() 
+      const playerVacancies = await playerVacancyDAO.getAllPlayerVacancies()
+      filterVacanciesThisWeek(playerVacancies)
       buildGroupByDay()
     }
 
@@ -170,6 +176,7 @@ section {
 .content {
   display: flex;
   flex-direction: column;
+  text-align: center;
   width: 100%;
   gap: 12px;
   margin: 10px 0;
