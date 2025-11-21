@@ -1,4 +1,9 @@
 <template>
+  <modal v-if="appStore.showForm"
+    @click-outside="appStore.setShowForm(false)" @save-data="publishVagancy">
+    <form-add-vagancy />
+  </modal>
+
   <section>
     <div class="header">
       <div class="title">
@@ -8,7 +13,7 @@
       <div class="offer">
         <span> {{ weekText }} </span>
         <span> - </span>
-        <default-button :text="'divulgar uma vaga'" :classes="['offer-button']" />
+        <default-button :text="'divulgar uma vaga'" :classes="['offer-button']" @click="appStore.setShowForm(true)" />
       </div>
     </div>
 
@@ -37,9 +42,11 @@ import DefaultButton from './components/button/DefaultButton.vue';
 import IndexColum from './components/IndexColum.vue';
 import OfferCard from './components/OfferCard.vue';
 import type { PlayerVacancyDTO } from './dtos/PlayerVacancyDTO';
-import { mockPlayerVacancies } from './utils/mocks';
 import { dayMap } from './utils/dayMap';
 import { firebase, playerVacancyDAO } from './services/api.service';
+import Modal from './components/modal/Modal.vue';
+import FormAddVagancy from './components/modal/FormAddVagancy.vue';
+import { useAppStore } from './stores/app.store';
 
 export default defineComponent({
   name: 'App',
@@ -48,12 +55,15 @@ export default defineComponent({
     DefaultButton,
     IndexColum,
     OfferCard,
+    Modal,
+    FormAddVagancy,
   },
   setup() {
+    const appStore = useAppStore()
     const groupsByDay = ref<Record<string, PlayerVacancyDTO[]>>({})
     const offerCards = ref<PlayerVacancyDTO[]>([])
     const weekText = ref<string>('Semana...')
-    const dates = ref<{ monday: Date | null, sunday: Date| null }>({monday: null, sunday: null })
+    const dates = ref<{ monday: Date | null, sunday: Date | null }>({ monday: null, sunday: null })
 
     const weekInterval = () => {
       const current = new Date();
@@ -117,6 +127,10 @@ export default defineComponent({
       }
     }
 
+    const publishVagancy = () => {
+      // 
+    }
+
     const initComponent = async () => {
       weekText.value = weekInterval()
       await firebase.login() 
@@ -130,8 +144,10 @@ export default defineComponent({
     })
 
     return {
+      appStore,
       weekText,
       groupsByDay,
+      publishVagancy,
     }
   }
 })
