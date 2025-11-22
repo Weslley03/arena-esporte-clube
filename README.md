@@ -1,4 +1,4 @@
-<img width="1193" height="667" alt="Captura de tela de 2025-11-19 23-16-12" src="https://github.com/user-attachments/assets/8f4a9e60-299c-4a3c-8d64-a93b1b007ee4" />
+<img width="981" height="934" alt="image" src="https://github.com/user-attachments/assets/faca72ba-bdaf-4ea5-b0a9-2743287723d2" />
 
 ## sobre o projeto
 
@@ -17,16 +17,14 @@ tudo sem complicação, focado no uso real do dia a dia.
 
 ## stack técnica
 
+quanto ao front, projeto escrito em typescript utilizando vue.
+
+- **pinia como lib state manager**
+
+
 o projeto não possui backend próprio. a proposta é ser totalmente leve e acessível, usando apenas:
 
-- **firebase free tier**
-  - authentication
+- **firebase (baas)**
   - firestore
-  - hosting ou storage (dependendo da necessidade)
 
-a ausência de backend reduz custos, facilita manutenção e deixa o projeto simples de evoluir.
-
-## motivação
-
-o principal objetivo é ajudar a comunidade local de jogadores a organizar partidas com mais facilidade. é uma ideia simples, mas com potencial de resolver um problema real que acontece toda semana.
 
