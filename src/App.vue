@@ -36,6 +36,8 @@
       <span v-else> Nenhuma vaga disponível esta semana. </span>
     </div>
   </section>
+
+  <footer class="app-footer" v-if="!onSpinner && Object.keys(groupsByDay).length"> desenvolvido por wef-tecnologia </footer>
 </template>
 
 <script lang="ts">
@@ -261,5 +263,13 @@ section {
     text-align: center;
     flex-wrap: wrap;
   }
+}
+
+.app-footer {
+  text-align: center;
+  padding: 12px 0;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
 }
 </style>
