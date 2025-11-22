@@ -34,5 +34,9 @@ export const validateWhatsApp = (value: string): { valid: boolean, error: string
     return { valid: false, error: "O terceiro dígito precisa ser '9'" }
   }
 
+  if (sanitized.length !== 11) {
+    return { valid: false, error: "O número precisa ter 11 digitos totais." }
+  }
+
   return { valid: true, error: null }
 }

@@ -1,6 +1,6 @@
 <template>
 
-  <div class="container">
+  <div class="container" @click="$emit('click', dayName, gameTime, number)">
 
     <div class="day-game">
       <calendar-icon :size="22" :stroke="colors.accent" />
@@ -44,6 +44,7 @@ export default defineComponent({
   props: {
     gameDate: { type: String, required: true },
     owner: { type: String, required: true },
+    number: { type: String, required: true },
     lookingFor: { type: String, required: true },
   },
   setup(props) {

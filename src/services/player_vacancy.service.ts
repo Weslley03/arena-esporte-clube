@@ -34,4 +34,9 @@ export class PlayerVacancyDAO {
 
     return vacancies
   }
+
+  async deletePlayerVacancy(playerVacancies: PlayerVacancyDTO[]) {
+    const ids = playerVacancies.map((pv) => pv.id)
+    return await this.firebase.delData(this.collectionName, ids)
+  }
 }

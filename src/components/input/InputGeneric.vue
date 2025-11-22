@@ -5,6 +5,7 @@
       :value="modelValue"
       @input="handleInput"
       :placeholder="placeHolder"
+      :maxlength="maxlength"
       class="input-field"
     />
     <slot name="icon" />
@@ -21,6 +22,7 @@ export default defineComponent({
     type: { type: String, default: 'text' },
     modelValue: { type: String, default: '' },
     placeHolder: { type: String, default: '' },
+    maxlength: { type: Number, default: 22 }
   },
   setup(_, { emit }) {
     const handleInput = (event: Event) => {

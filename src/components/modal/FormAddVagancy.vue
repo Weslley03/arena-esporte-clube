@@ -12,7 +12,7 @@
             <user-icon />
             <span> Seu nome </span>
           </div>
-          <input-generic v-model="formData.name" :place-holder="'ex: Weslley'" />
+          <input-generic v-model="formData.name" :place-holder="'ex: Weslley'" :maxlength="18" />
         </div>
       
         <div class="input-area">
@@ -20,7 +20,7 @@
             <phone-icon />
             <span> WhatsApp </span>
           </div>
-          <input-generic v-model="formData.number" :place-holder="'449...'" />
+          <input-generic v-model="formData.number" :place-holder="'449...'" :maxlength="11" />
           <div v-if="whatsappValidation && whatsappValidation.error" class="input-error">{{ whatsappValidation.error }}</div>
         </div>
       </div>
@@ -56,13 +56,14 @@
         </div>
       </div>
 
-      <default-button :classes="['submit-button']" :text="'Publicar vaga'" @click="submitForm" />
+      <default-button v-if="!onSpinner" :classes="['submit-button']" :text="'Publicar vaga'" @click="submitForm" />
+      <loading-spinner v-else />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive } from "vue";
+import { computed, defineComponent, reactive, ref } from "vue";
 import { validateWhatsApp } from "@/utils/validations";
 import PlusIcon from "../icons/PlusIcon.vue";
 import InputGeneric from "../input/InputGeneric.vue";
@@ -73,6 +74,8 @@ import ClockIcon from "../icons/ClockIcon.vue";
 import TargetIcon from "../icons/TargetIcon.vue";
 import DefaultButton from "../button/DefaultButton.vue";
 import { useAppStore } from "@/stores/app.store";
+import LoadingSpinner from "../spinner/LoadingSpinner.vue";
+import { createToast } from "@/utils/createToast";
 
 export default defineComponent({
   name: 'FormAddVagancy',
@@ -85,10 +88,12 @@ export default defineComponent({
     ClockIcon,
     TargetIcon,
     DefaultButton,
+    LoadingSpinner,
   },
   emits: ['save-data'],
   setup(_, { emit }) {
     const appStore = useAppStore()
+    const onSpinner = ref<boolean>(false)
 
     const formData = reactive({
       name: '',
@@ -111,9 +116,13 @@ export default defineComponent({
     const whatsappValidation = computed(() => validateWhatsApp(formData.number))
 
     const submitForm = () => {
-      const allComplet =
-        !!(formData.name && formData.number && whatsappValidation.value.valid && formData.gameDate && formData.gameTime)
-      if (!allComplet) return alert('Preencha o formulario!')
+      const allComplet = !!(formData.name && formData.number && formData.gameDate && formData.gameTime)
+      if (!allComplet) return createToast('Preencha o formulario!', 'warning')
+
+      const isIncorrect = whatsappValidation.value.valid
+      if (!isIncorrect) return createToast('Preencha o formulario corretamente!', 'warning')
+
+      onSpinner.value = true
       emit('save-data', formData)
     }
 
@@ -122,6 +131,7 @@ export default defineComponent({
       formData,
       lookingForSelect,
       whatsappValidation,
+      onSpinner,
       submitForm,
     }
   },
@@ -180,6 +190,7 @@ export default defineComponent({
   max-width: 100%;
   min-width: 0;
   border-radius: 6px;
+  cursor: pointer;
   border: 1px solid var(--accent);
 
   &:hover {
